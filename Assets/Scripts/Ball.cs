@@ -9,7 +9,6 @@ public class Ball : MonoBehaviour
     public Rigidbody2D body;
     Vector2 direction;
     
-
     private void Start()
     {
         ResetPosition();
@@ -43,6 +42,17 @@ public class Ball : MonoBehaviour
         {
             Destroy(collision.gameObject);
             manager.OnBlockDestroyed();
+
+            if(manager.BlocksRemaining == 1)
+            {
+                //1. Find the last block
+                GameObject lastBlock = GameObject.FindGameObjectWithTag("Block");
+                //2. Calculate the direction to it
+                Vector2 direction = lastBlock.transform.position - transform.position;
+                direction.Normalize();
+                //3. Set the velocity towards the block
+                body.velocity = direction * moveSpeed;
+            }
     
         }
     }
